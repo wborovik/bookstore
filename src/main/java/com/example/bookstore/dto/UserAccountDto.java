@@ -14,5 +14,5 @@ public class UserAccountDto {
     private String middleName;
     private LocalDate birthDate;
     private List<UserRole> roles;
-    private boolean isActive = true;
+    private boolean isActive;
 }

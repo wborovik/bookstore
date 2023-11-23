@@ -14,6 +14,7 @@ public class UserRoleService extends AbstractService<UserRole, UserRoleRepositor
     }
 
     public UserRole findUserRoleByRoleName(String roleName) throws EntityNotFoundException {
-        return repository.findUserRoleByRoleName(roleName).orElseThrow(EntityNotFoundException::new);
+        return repository.findUserRoleByRoleName(roleName).orElseThrow(() ->
+                new EntityNotFoundException(String.format("Role %s not found", roleName)));
     }
 }

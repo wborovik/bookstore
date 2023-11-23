@@ -5,7 +5,6 @@ import com.example.bookstore.dto.RegistrationUserDto;
 import com.example.bookstore.mapper.RegistrationUserMapper;
 import com.example.bookstore.repository.UserAccountRepository;
 import com.example.bookstore.service.common.AbstractService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -18,12 +17,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Slf4j
 @Service
 public class UserAccountService extends AbstractService<UserAccount, UserAccountRepository> implements UserDetailsService {
     private final UserRoleService roleService;
     private final RegistrationUserMapper userMapper;
     private final PasswordEncoder encoder;
+
     public UserAccountService(UserAccountRepository repository, UserRoleService roleService,
                               RegistrationUserMapper userMapper, @Lazy PasswordEncoder passwordEncoder) {
         super(repository);
@@ -33,10 +32,8 @@ public class UserAccountService extends AbstractService<UserAccount, UserAccount
     }
 
     public UserAccount findUserByLogin(String login) {
-        return repository.findUserAccountByLogin(login).orElseThrow(() -> {
-            log.error(String.format("ERROR: user %s not found", login));
-            return new UsernameNotFoundException(String.format("User %s not found", login));
-        });
+        return repository.findUserAccountByLogin(login).orElseThrow(() ->
+                new UsernameNotFoundException(String.format("User %s not found", login)));
     }
 
     @Override
@@ -50,10 +47,11 @@ public class UserAccountService extends AbstractService<UserAccount, UserAccount
         );
     }
 
-    public UserAccount registerNewUser(RegistrationUserDto userDto) throws Exception {
+    public UserAccount registerNewUser(RegistrationUserDto userDto) {
         UserAccount user = userMapper.userDtoToUserAccount(userDto);
         user.setRoles(List.of(roleService.findUserRoleByRoleName("ROLE_USER")));
         user.setPassword(encoder.encode(userDto.getPassword()));
+
         return super.createEntity(user);
     }
 }

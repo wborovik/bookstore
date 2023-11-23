@@ -4,12 +4,13 @@ import com.example.bookstore.domain.common.AbstractEntity;
 import com.example.bookstore.repository.common.AbstractRepository;
 import com.example.bookstore.util.Utils;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
-@Slf4j
 @RequiredArgsConstructor
 public abstract class AbstractService<T extends AbstractEntity, R extends AbstractRepository<T>> {
     protected final R repository;
@@ -18,20 +19,26 @@ public abstract class AbstractService<T extends AbstractEntity, R extends Abstra
         return repository.findAll();
     }
 
-    public T getEntityById(Long id) {
-        return repository.findById(id).orElseThrow(() -> {
-            log.error(String.format("Error: object with identifier %s does not exist in the database", id));
-            return new EntityNotFoundException("Entity id not found: " + id);
-        });
+    public Page<T> getAllWithPaginationAndSorting(int page, int size, String field, boolean isDesc) {
+        Sort.Direction direction = Sort.Direction.ASC;
+        if (isDesc) {
+            direction = Sort.Direction.DESC;
+        }
+        return repository.findAll(PageRequest.of(page, size, Sort.by(direction, field)));
     }
 
-    public T updateEntityById(Long id, T entity, String... ignoredFields) throws Exception {
+    public T getEntityById(Long id) {
+        return repository.findById(id).orElseThrow(() ->
+                new EntityNotFoundException(String.format("Entity with identifier %s does not exist", id)));
+    }
+
+    public T updateEntityById(Long id, T entity, String... ignoredFields) {
         T entityUpdate = getEntityById(id);
         Utils.copyNonNullProperties(entity, entityUpdate, ignoredFields);
         return createEntity(entityUpdate);
     }
 
-    public T createEntity(T entity) throws Exception {
+    public T createEntity(T entity) {
         return repository.save(entity);
     }
 
