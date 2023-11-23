@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("author")
+@RequestMapping("bookstore/authors")
 public class AuthorController extends AbstractController<Author, AuthorService, AuthorRepository> {
     public AuthorController(AuthorService service) {
         super(service);

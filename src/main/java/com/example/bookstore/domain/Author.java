@@ -1,12 +1,11 @@
 package com.example.bookstore.domain;
 
 import com.example.bookstore.domain.common.AuditEntity;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Past;
@@ -25,5 +24,6 @@ public class Author extends AuditEntity {
     @Past
     private LocalDate birthDate;
     @OneToMany(mappedBy = "author")
+    @JsonManagedReference
     private List<Book> books;
 }

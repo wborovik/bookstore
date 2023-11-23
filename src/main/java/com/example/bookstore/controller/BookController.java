@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("book")
+@RequestMapping("bookstore/books")
 public class BookController extends AbstractController<Book, BookService, BookRepository> {
     public BookController(BookService service) {
         super(service);

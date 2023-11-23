@@ -23,6 +23,7 @@ public class UserAccount extends AuditEntity {
     @Past
     private LocalDate birthDate;
     @NotBlank
+    @Column(unique = true)
     private String login;
     @NotBlank
     private String password;
@@ -37,5 +38,5 @@ public class UserAccount extends AuditEntity {
             joinColumns = @JoinColumn(name = "account_id"),
             inverseJoinColumns = @JoinColumn(name = "book_id"))
     private List<Book> purchasedBooks;
-    private boolean isActive;
+    private boolean isActive = true;
 }

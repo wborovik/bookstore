@@ -4,6 +4,7 @@ import com.example.bookstore.domain.common.AuditEntity;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotBlank;
 
@@ -12,6 +13,7 @@ import javax.validation.constraints.NotBlank;
 @Entity
 public class UserRole extends AuditEntity {
     @NotBlank
+    @Column(unique = true)
     private String roleName;
     @NotBlank
     private String description;

@@ -1,17 +1,16 @@
 package com.example.bookstore.domain;
 
 import com.example.bookstore.domain.common.AuditEntity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.ISBN;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.ISBN;
-
 import java.math.BigDecimal;
 
 @Getter
@@ -26,6 +25,7 @@ public class Book extends AuditEntity {
     @ManyToOne
     private Genre genre;
     @ManyToOne
+  @JsonBackReference
     private Author author;
     @NotNull
     private BigDecimal price;

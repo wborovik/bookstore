@@ -1,4 +1,4 @@
-create sequence if not exists hibernate_sequence start 1 increment 1;
+create sequence if not exists global_sequence start 1 increment 1;
 
 create table if not exists author
 (
@@ -39,23 +39,17 @@ create table if not exists book
 alter table if exists book add constraint book_genre_fk foreign key (genre_id) references genre;
 alter table if exists book add constraint book_author_fk foreign key (author_id) references author;
 
--- create table if not exists author_book (
---     author_id bigint not null,
---     book_id   bigint not null
--- );
---
--- alter table if exists author_book add constraint author_book_fk foreign key (author_id) references author;
--- alter table if exists author_book add constraint book_author_fk foreign key (book_id) references book;
-
 create table if not exists user_role
 (
     id          bigint  not null primary key,
-    role_name   varchar not null,
+    role_name   varchar unique not null,
     description varchar not null,
     created     timestamp(6) not null,
     changed     timestamp(6),
     version     integer
 );
+
+create unique index if not exists user_role_role_name_key on user_role using btree (role_name);
 
 create table if not exists payment_transaction
 (
@@ -75,13 +69,15 @@ create table if not exists user_account
     middle_name varchar,
     last_name   varchar not null,
     birth_date  date,
-    login       varchar not null,
+    login       varchar unique not null,
     password    varchar not null,
-    is_active   boolean not null,
+    is_active   boolean not null default true,
     created     timestamp(6) not null,
     changed     timestamp(6),
     version     integer
 );
+
+create unique index if not exists user_account_login_key on user_account using btree (login);
 
 alter table if exists payment_transaction add constraint transaction_book_fk foreign key (book_id) references book;
 alter table if exists payment_transaction add constraint transaction_user_fk foreign key (account_id) references user_account;

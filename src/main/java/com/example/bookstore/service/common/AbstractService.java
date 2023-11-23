@@ -7,11 +7,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
 public abstract class AbstractService<T extends AbstractEntity, R extends AbstractRepository<T>> {
     protected final R repository;
+
+    public List<T> getAllEntities() {
+        return repository.findAll();
+    }
 
     public T getEntityById(Long id) {
         return repository.findById(id).orElseThrow(() -> {
@@ -28,5 +33,9 @@ public abstract class AbstractService<T extends AbstractEntity, R extends Abstra
 
     public T createEntity(T entity) throws Exception {
         return repository.save(entity);
+    }
+
+    public void deleteEntityById(Long id) {
+        repository.delete(getEntityById(id));
     }
 }

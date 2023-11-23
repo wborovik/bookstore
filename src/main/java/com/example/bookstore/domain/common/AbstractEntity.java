@@ -11,7 +11,8 @@ import java.io.Serializable;
 @MappedSuperclass
 public abstract class AbstractEntity implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "global_sequence")
+    @SequenceGenerator(name = "global_sequence", allocationSize = 1)
     @Column(updatable = false, nullable = false)
     private Long id;
 }
