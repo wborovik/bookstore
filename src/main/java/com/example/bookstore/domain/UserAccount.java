@@ -1,6 +1,7 @@
 package com.example.bookstore.domain;
 
 import com.example.bookstore.domain.common.AuditEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,6 +27,7 @@ public class UserAccount extends AuditEntity {
     @Column(unique = true)
     private String login;
     @NotBlank
+    @JsonIgnore
     private String password;
     @NotEmpty
     @ManyToMany

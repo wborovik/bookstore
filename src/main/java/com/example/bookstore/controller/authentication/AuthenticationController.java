@@ -21,7 +21,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("registration")
-    public UserAccountDto createNewUser(@RequestBody RegistrationUserDto userDto) throws Exception {
+    public UserAccountDto createNewUser(@RequestBody RegistrationUserDto userDto) {
         return authenticationService.createNewUser(userDto);
     }
 }

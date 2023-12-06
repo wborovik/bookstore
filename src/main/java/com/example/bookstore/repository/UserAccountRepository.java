@@ -6,5 +6,5 @@ import com.example.bookstore.repository.common.AbstractRepository;
 import java.util.Optional;
 
 public interface UserAccountRepository extends AbstractRepository<UserAccount> {
-    Optional<UserAccount> findUserAccountByLogin(String login);
+    Optional<UserAccount> findUserAccountByLoginContainingIgnoreCase(String login);
 }

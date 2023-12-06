@@ -32,7 +32,7 @@ public class UserAccountService extends AbstractService<UserAccount, UserAccount
     }
 
     public UserAccount findUserByLogin(String login) {
-        return repository.findUserAccountByLogin(login).orElseThrow(() ->
+        return repository.findUserAccountByLoginContainingIgnoreCase(login).orElseThrow(() ->
                 new UsernameNotFoundException(String.format("User %s not found", login)));
     }
 
